@@ -1,0 +1,365 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Email Checker</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            width: 450px;
+            max-width: 100%;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .input-group:focus-within {
+            border-color: #4f46e5;
+        }
+
+        input {
+            flex: 1;
+            min-width: 0;
+            padding: 14px;
+            border: none;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .domain {
+            padding: 14px 10px;
+            background: #f1f5f9;
+            color: #555;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 15px;
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #3730a3;
+        }
+
+        #result {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .pass {
+            display: block !important;
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .fail {
+            display: block !important;
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .error {
+            display: block !important;
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .footer {
+            margin-top: 25px;
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>EMAIL CHECKER</h1>
+
+    <p class="description">
+        Kiểm tra email nhận vé
+    </p>
+
+    <form id="emailForm">
+
+        <label for="email">Địa chỉ Email</label>
+
+        <div class="input-group">
+
+            <input
+                type="text"
+                id="email"
+                placeholder="Nhập tên email..."
+                autocomplete="off"
+            >
+
+            <span class="domain">@gmail.com</span>
+
+        </div>
+
+        <button type="submit">
+            KIỂM TRA EMAIL
+        </button>
+
+    </form>
+
+    <div id="result" role="status" aria-live="polite"></div>
+
+    <div class="footer">
+        Email Verification System
+    </div>
+
+</div>
+
+<script>
+
+// ========================================
+// DANH SÁCH EMAIL
+// ========================================
+
+const emailList = [
+
+    "ngann2344@gmail.com",
+    "nguyenlanhnguyen020@gmail.com",
+    "lethi10b1@gmail.com",
+    "pduyvankhanh@gmail.com",
+    "linhngockhanh.work@gmail.com",
+    "yoongiuwu93939@gmail.com",
+    "ntran5084@gmail.com",
+    "hunnie0201@gmail.com",
+    "nhibabe0910@gmail.com",
+    "nguyenthithanhtan003@gmail.com",
+    "tn09598300@gmail.com",
+    "hoangkhuyen.pham@gmail.com",
+    "gnartktd0122@gmail.com",
+    "maikhanhphanduy@gmail.com",
+    "hoadong.nina@gmail.com",
+    "nguyenbaotran965@gmail.com",
+    "supupark@gmail.con",
+    "hajang0206@gmail.com",
+    "hanhhlinhtg@gmail.com",
+    "uyenle04042008@gmail.com",
+    "phongnguyentongan@gmail.com",
+    "kimhien140993@gmail.com",
+    "huynhngoctramphan@gmail.com",
+    "dotuyetanh002@gmail.com",
+    "thanhnhiho.060400@gmail.com",
+    "2521002396@sv.ufm.edu.vn",
+    "longquyen6622@gmail.com",
+    "nle225247@gmail.com",
+    "ankhuyen.marketing@gmail.com",
+    "maiphuong22.2710@gmail.com",
+    "an.trinhthien0810@gmail.com",
+    "hoadong.sgu@gmail.com",
+    "duongngocphuonguyen964@gmail.com",
+    "thuphuong180905@gmail.com",
+    "nbttin21.16@gmail.com",
+    "nghipill@gmail.com",
+    "nguyenthuytienn9a2@gmail.com",
+    "ngngochuyen55.44@gmail.com",
+    "thanhmai199519@gmail.com",
+    "tranthaoquynhnhu2023ak@gmail.com",
+    "peaches6081@gmail.com",
+    "nngoccbinnh@gmail.com",
+    "thuthu01122704@gmail.com",
+    "mngan9980@gmail.com",
+    "yenvan270708@gmail.com",
+    "tranquynhanhngoc1234@gmail.com",
+    "hcngocnhi3105@gmail.com",
+    "donghieu280797@gmail.com",
+    "huynhxuanmai1907@gmail.com",
+    "phanhoanggiahann96@gmail.com",
+    "2521002685@sv.ufm.edu.vn",
+    "thuyngadaothi88@gmail.com",
+    "thngocc2111@gmail.com",
+    "maltulynan@gmail.com",
+    "ebehann17@gmail.com",
+    "thanhhduyenns@gnail.com",
+    "tuhue.phanmai@gmail.com",
+    "hoadongsgu@gmail.com",
+    "doandiem0303@gmail.com",
+    "phuong.ptt.cv@gmail.com",
+    "ngngocbinh89@gmail.com",
+    "truclinh060704@gmail.com",
+    "thanhthaodmx2022@gmail.com",
+    "nvpn2707@gmail.com",
+    "dnq9798@gmail.con",
+    "nxmai.vov@gmail.com",
+    "tvyxinhgai@gmail.com",
+    "thinathach2004@gmail.com",
+    "hangoctrinh.030303@gmail.com",
+    "nn587957@gmail.com",
+    "2251010379@pnt.edu.vn",
+    "huynhthituuyen262006@gmail.com",
+    "ngoccanhh241@gmail.com",
+    "nguyenthilan6763@gmail.com",
+    "haole13827@gmail.com",
+    "dungrupy9x@gmail.com",
+    "tranvy2004cm@gmail.com",
+    "yngoc2406@gmail.com",
+    "tarale1201.21@gmail.com",
+    "nguyentranbaohan2007qng@gmail.com",
+    "thaomynguyen2208@gmail.com",
+    "tutrang140601@gmail.com",
+    "dophuongnguyen2112@gmail.com",
+    "hehehehe4hhhh@gmail.com",
+    "huynhngan0613@gmail.com",
+    "tidobanhmi@gmail.com",
+    "t.h.a.haanh.6221@gmail.com",
+    "bvy145@gmail.com",
+    "ivhcyb@gmail.com",
+    "nguyenngocthuy281208@gmail.com",
+    "nguyenthuyvy1702@gmail.com",
+    "l.dieuhien2004@gmail.com",
+    "ltdieuhang3826",
+    "vvuqquynh@gmail.com",
+    "maiduyen1320@gmail.com",
+    "linhdo2803@gmail.com",
+    "tuyethandao06@gmail.com",
+    "tongocdung2007@gmail.com",
+    "mylamcg165@gmail.com",
+    "chau94738@gmail.com",
+    "bcngoc09@gmail.com",
+    "nguyentranmylinh1310@gmail.com",
+    "nhieungocthao041004@gmail.com",
+    "0989869872ha@gmail.com"
+
+];
+
+
+// ========================================
+// CHỨC NĂNG KIỂM TRA EMAIL
+// ========================================
+
+const form = document.getElementById("emailForm");
+const emailInput = document.getElementById("email");
+const result = document.getElementById("result");
+
+form.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    let email = emailInput.value.trim().toLowerCase();
+
+    result.className = "";
+
+    // Không cho phép bỏ trống
+    if (email === "") {
+
+        result.innerHTML = "⚠ Vui lòng nhập email!";
+        result.classList.add("error");
+
+        return;
+    }
+
+    // Tự thêm @gmail.com nếu người dùng không nhập tên miền
+    if (!email.includes("@")) {
+
+        email = email + "@gmail.com";
+
+    }
+
+    // Kiểm tra định dạng
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+
+        result.innerHTML = "⚠ Email không đúng định dạng!";
+        result.classList.add("error");
+
+        return;
+    }
+
+    // Đối chiếu danh sách
+    const exists = emailList.some(
+        item => item.toLowerCase() === email
+    );
+
+    // Hiển thị kết quả
+    if (exists) {
+
+        result.innerHTML =
+            "✓ PASS<br>Email tồn tại trong danh sách!<br>" + email;
+
+        result.classList.add("pass");
+
+    } else {
+
+        result.innerHTML =
+            "✕ FAIL<br>Email không tồn tại trong danh sách!<br>" + email;
+
+        result.classList.add("fail");
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
